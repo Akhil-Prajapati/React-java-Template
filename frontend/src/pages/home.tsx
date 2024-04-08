@@ -14,6 +14,8 @@ function Home() {
 
   const [isopen, setIsOpen] = useState(false);
 
+  const [validate, setValidate] = useState('')
+
   //get data
   useEffect(() => {
     (async () => {
@@ -41,23 +43,29 @@ function Home() {
   //set data
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:8080/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      setUserUpdeted(!userupdeted);
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+      console.log("emailis ok");
+      try {
+        const response = await fetch('http://localhost:8080/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        });
+        setUserUpdeted(!userupdeted);
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        setUserUpdeted(true);
+
+      } catch (error) {
+        console.log("error", error);
       }
-      setUserUpdeted(true);
-
-    } catch (error) {
-      console.log("error", error);
+    } else {
+      setValidate('Please enter a email or password');
     }
   };
   //upadte data
@@ -143,7 +151,7 @@ function Home() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -167,11 +175,15 @@ function Home() {
                   onChange={(e) => { setPassword(e.target.value) }}
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
-
+            <div className="text-sm content-center">
+              <h6 className="justify-center flex font-semibold text-indigo-600 hover:text-indigo-500" >
+                {validate}
+              </h6>
+            </div>
             <div>
               <button
                 type="submit"
