@@ -1,10 +1,9 @@
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import Table from '@/components/Table/table';
-import React, { useEffect, useState } from 'react';
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import Table from "@/components/Table/table";
+import React, { useEffect, useState } from "react";
 
 function Home() {
-
   const [selectedusersdata, setSelectedUsersData] = useState<any>([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,32 +13,28 @@ function Home() {
 
   const [isopen, setIsOpen] = useState(false);
 
-  const [validate, setValidate] = useState('')
+  const [validate, setValidate] = useState("");
 
   //get data
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('http://localhost:8080/get-user-data', {
-          method: 'GET',
+        const response = await fetch("http://localhost:8080/get-user-data", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
         setUserData(await response.json());
 
-
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
-
-
       } catch (error) {
         console.log("error", error);
       }
-    })()
-
-  }, [userupdeted])
+    })();
+  }, [userupdeted]);
   //set data
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -47,25 +42,24 @@ function Home() {
     if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
       console.log("emailis ok");
       try {
-        const response = await fetch('http://localhost:8080/signup', {
-          method: 'POST',
+        const response = await fetch("http://localhost:8080/signup", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ email: email, password: password }),
         });
         setUserUpdeted(!userupdeted);
-
+        console.log("res", response);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         setUserUpdeted(true);
-
       } catch (error) {
         console.log("error", error);
       }
     } else {
-      setValidate('Please enter a email or password');
+      setValidate("Please enter a email or password");
     }
   };
   //upadte data
@@ -73,56 +67,57 @@ function Home() {
     setIsOpen(true);
     setSelectedUsersData(userdata);
     //updateduser set here
-    setEmail(userdata.email)
-    setPassword(userdata.password)
-
+    setEmail(userdata.email);
+    setPassword(userdata.password);
   };
   const handleUpdate = async () => {
-
     try {
-      const response = await fetch('http://localhost:8080/update-user', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/update-user", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: selectedusersdata.id, email: email, password: password }),
+        body: JSON.stringify({
+          id: selectedusersdata.id,
+          email: email,
+          password: password,
+        }),
       });
       setUserUpdeted(!userupdeted);
       setIsOpen(false);
       alert("user updated successfully");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
     } catch (error) {
       console.log("error", error);
     }
-  }
+  };
   //delete data
   const handleDelete = async (id: any) => {
-    console.log(id)
+    console.log(id);
     try {
-      const response = await fetch('http://localhost:8080/delete-user', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/delete-user", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ id }),
       });
       setUserUpdeted(!userupdeted);
       alert("user deleted successfully");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
     } catch (error) {
       console.log("error", error);
     }
-  }
+  };
 
   return (
     <div>
       <Header />
-      <div className="border border-gray-950 border-solid">
-      </div>
+      <div className="border border-gray-950 border-solid"></div>
 
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -139,13 +134,18 @@ function Home() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" action="#" method="POST">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Email address
               </label>
               <div className="mt-2">
                 <input
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value) }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   id="email"
                   name="email"
                   type="email"
@@ -158,11 +158,14 @@ function Home() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Password
                 </label>
                 <div className="text-sm">
-                  <a className="font-semibold text-indigo-600 hover:text-indigo-500" >
+                  <a className="font-semibold text-indigo-600 hover:text-indigo-500">
                     {/* Forgot password? */}
                   </a>
                 </div>
@@ -172,7 +175,9 @@ function Home() {
                   id="password"
                   name="password"
                   type="password"
-                  onChange={(e) => { setPassword(e.target.value) }}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -180,7 +185,7 @@ function Home() {
               </div>
             </div>
             <div className="text-sm content-center">
-              <h6 className="justify-center flex font-semibold text-indigo-600 hover:text-indigo-500" >
+              <h6 className="justify-center flex font-semibold text-indigo-600 hover:text-indigo-500">
                 {validate}
               </h6>
             </div>
@@ -194,25 +199,36 @@ function Home() {
               </button>
             </div>
           </form>
-
         </div>
       </div>
 
-      <div className="border border-gray-950 border-solid">
-      </div>
+      <div className="border border-gray-950 border-solid"></div>
       <div className="bg-gray-700 py-2 px-4">
         <h1 className="text-white text-lg font-bold">User Table</h1>
       </div>
 
-      <Table data={userdata} openUpdateModel={openUpdateModel} handleDelete={handleDelete} />
+      <Table
+        data={userdata}
+        openUpdateModel={openUpdateModel}
+        handleDelete={handleDelete}
+      />
 
       {/* edit */}
-      <div className={`fixed inset-0 flex items-center justify-center  ${isopen ? '' : 'hidden'}`}>
+      <div
+        className={`fixed inset-0 flex items-center justify-center  ${
+          isopen ? "" : "hidden"
+        }`}
+      >
         <div className="fixed inset-0 bg-black opacity-50"></div>
         <div className="bg-white p-6 rounded-lg z-10">
-          <h2 className="text-xl font-semibold mb-4">Update User Information</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Update User Information
+          </h2>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -224,14 +240,16 @@ function Home() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
               className="border border-gray-300 rounded-lg px-3 py-2 w-full"
               type="password"
               id="password"
-
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -244,7 +262,9 @@ function Home() {
           </button>
           <button
             className="ml-4 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400"
-            onClick={() => { setIsOpen(false) }}
+            onClick={() => {
+              setIsOpen(false);
+            }}
           >
             Cancel
           </button>
@@ -252,7 +272,7 @@ function Home() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
