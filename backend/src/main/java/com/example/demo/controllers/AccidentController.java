@@ -30,7 +30,6 @@ public class AccidentController {
     @PostMapping("/get-accident-details")
     public List<Map<String, Object>> getAccidentDetails() {
         List<Map<String, Object>> list = accidentRepo.getAccidentDetails();
-        System.out.println(list + "list");
         return list;
     }
 

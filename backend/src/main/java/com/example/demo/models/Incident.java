@@ -16,6 +16,7 @@ public class Incident {
     private String firstName;
     private String city;
     private String mobile;
+    private String file;
 
     public Long getId() {
         return id;
@@ -47,6 +48,14 @@ public class Incident {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
 }

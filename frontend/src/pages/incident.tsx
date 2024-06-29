@@ -17,7 +17,8 @@ const Incident = () => {
   const [flag, setFlag] = useState(false);
   const [updateFlag, setUpdateFlag] = useState(false);
   const [id, setId] = useState("");
-
+  const [image, setImage] = useState("");
+  console.log("image", data);
   useEffect(() => {
     try {
       (async () => {
@@ -36,9 +37,19 @@ const Incident = () => {
       console.log(error);
     }
   }, [flag]);
+  const toBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        resolve(evt.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   const handleSubmit = async () => {
     try {
+      const uploadFile = await toBase64(image);
       const response = await fetch(
         "http://localhost:8080/incident/save-details",
         {
@@ -46,7 +57,12 @@ const Incident = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ firstName: fname, city, mobile }),
+          body: JSON.stringify({
+            firstName: fname,
+            city,
+            mobile,
+            file: uploadFile,
+          }),
         }
       );
       setFlag(!flag);
@@ -146,6 +162,16 @@ const Incident = () => {
             }}
           />
         </div>
+        <div>
+          <label>Upload Image</label>
+          <input
+            type="file"
+            className="block w-50 rounded-md border-4 p-2"
+            onChange={(e: any) => {
+              setImage(e.target.files[0]);
+            }}
+          />
+        </div>
         <button
           className="bg-gray-600 p-2 rounded-md"
           onClick={() => {
@@ -155,6 +181,7 @@ const Incident = () => {
           {updateFlag ? "Update" : "submit"}
         </button>
       </div>
+
       <div className="w-50">
         <Accordion>
           {data.map((d: any, i) => {
@@ -162,6 +189,16 @@ const Incident = () => {
               <AccordionItem>
                 <h2>
                   <AccordionButton>
+                    {/* <div>
+                      <img
+                        src={image}
+                        style={{
+                          width: "50%",
+                          height: "50%",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </div> */}
                     <Box as="span" flex="1" textAlign="left">
                       {d.first_name}
                     </Box>
