@@ -7,13 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "accidentDetails")
-public class Accident {
+@Table(name = "agridetails")
+public class Agri {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String address;
+    private String city;
+    private String mobile;
 
     public Long getId() {
         return id;
@@ -31,22 +33,20 @@ public class Accident {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCity() {
+        return city;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getPincode() {
-        return pincode;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
-
-    private String pincode;
 
 }

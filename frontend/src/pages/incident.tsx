@@ -1,3 +1,4 @@
+import { useStore } from "@/components/store/navigation";
 import {
   Accordion,
   AccordionButton,
@@ -18,6 +19,8 @@ const Incident = () => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [id, setId] = useState("");
   const [image, setImage] = useState("");
+  const test = useStore.use.bears();
+  console.log(test);
   console.log("image", data);
   useEffect(() => {
     try {

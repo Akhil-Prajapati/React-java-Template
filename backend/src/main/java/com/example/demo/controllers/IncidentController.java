@@ -36,13 +36,10 @@ public class IncidentController {
 
     @PostMapping("/save-details")
     public String postMethodNameIncidentRepo(@RequestBody Incident req) throws Exception {
-        System.out.println("files : " + req.getFile());
         if (StringUtils.isNotBlank(req.getFile())) {
-            System.out.println("files1 : " + req.getFile());
             byte[] pdfBytes = Base64.decodeBase64(req.getFile().split(",")[1]);
             var uuid = UUID.randomUUID().toString();
             var filePath = folderpath + "/forum" + uuid + ".png";
-            System.out.println("filePath : " + filePath);
             var file1 = new File(filePath);
             try (OutputStream stream = FileUtils.openOutputStream(file1)) {
                 stream.write(pdfBytes);
