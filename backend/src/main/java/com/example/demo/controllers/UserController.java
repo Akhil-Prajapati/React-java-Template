@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepo;
@@ -9,9 +10,12 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +62,16 @@ public class UserController {
     String q = "DELETE FROM signup_user WHERE id=" + body.getId();
     template.update(q);
     return "You are deleted😈😈";
+  }
+
+  @GetMapping("/search-user/{email}")
+  public ResponseEntity<User> searchUser(@PathVariable String email) {
+    Optional<User> user = userRepo.findByEmail(email);
+    if (user.isPresent()) {
+      return ResponseEntity.ok(user.get());
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
   }
 
 }

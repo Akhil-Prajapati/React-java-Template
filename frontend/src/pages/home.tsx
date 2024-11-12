@@ -18,7 +18,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('http://localhost:8080/get-user-data', {
+        const response = await fetch('http://localhost:8083/get-user-data', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ function Home() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/signup', {
+      const response = await fetch('http://localhost:8083/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function Home() {
   const handleUpdate = async () => {
 
     try {
-      const response = await fetch('http://localhost:8080/update-user', {
+      const response = await fetch('http://localhost:8083/update-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function Home() {
   const handleDelete = async (id: any) => {
     console.log(id)
     try {
-      const response = await fetch('http://localhost:8080/delete-user', {
+      const response = await fetch('http://localhost:8083/delete-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,6 +109,8 @@ function Home() {
       console.log("error", error);
     }
   }
+
+
 
   return (
     <div>
